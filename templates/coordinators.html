@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tracks - SCIHUM-25 Symposium</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Fullscreen Background Video */
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
+      color: white;
+      text-align: center;
+    }
+
+    .track-box {
+      background: rgba(0, 0, 0, 0.5);
+      margin: 6rem auto;
+      padding: 2.5rem 1.5rem 1.5rem;
+      max-width: 600px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    .track-box:hover {
+      transform: scale(1.05);
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    /* Profile image inside box */
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-size: cover;
+      background-position: center;
+      margin: 0 auto 1rem;
+      border: 4px solid white;
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .track-box h2 {
+      margin-top: 60px;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(255,255,255,0.8), 0 0 12px rgba(255,255,255,0.4);
+    }
+
+    .event-list {
+      display: none;
+      margin-top: 1rem;
+      text-align: left;
+    }
+
+    .event-list li {
+      margin: 0.5rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .track-box h2 {
+        font-size: 1.5rem;
+      }
+
+      .content-wrapper {
+        padding: 1rem;
+      }
+
+      .video-background {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <video class="video-background" autoplay muted loop playsinline>
+    <source src="{{ url_for('static', filename='background_co-ordinator.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="content-wrapper">
+    <div class="track-box" onclick="toggleEvents('Aishwarya N')">
+      <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='aishwarya.jpg') }}');"></div>
+      <h2>Aishwarya N</h2>
+      <ul id="Aishwarya N" class="event-list">
+        <li>Staff Co-ordinator</li>
+        <li>95669 87456</li>
+      </ul>
+    </div>
+
+    <div class="track-box" onclick="toggleEvents('Ramya')">
+      <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='ramya.jpg') }}');"></div>
+      <h2>Ramya</h2>
+      <ul id="Ramya" class="event-list">
+        <li>Staff Co-ordinator</li>
+        <li>0000000000</li>
+      </ul>
+    </div>
+
+    <div class="track-box" onclick="toggleEvents('Balaji_P')">
+      <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='balaji_p.jpg') }}');"></div>
+      <h2>Balaji P</h2>
+      <ul id="Balaji_P" class="event-list">
+        <li>Student Co-ordinator</li>
+        <li>81489 09596</li>
+      </ul>
+    </div>
+
+    <div class="track-box" onclick="toggleEvents('SriramR')">
+      <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='sriram_r.jpg') }}');"></div>
+      <h2>Sriram R</h2>
+      <ul id="Sriram R" class="event-list">
+        <li>Student Co-ordinator</li>
+        <li>63793 90238</li>
+      </ul>
+    </div>
+
+    <div class="track-box" onclick="toggleEvents('Roshan_P')">
+      <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='roshan_p.jpg') }}');"></div>
+      <h2>Roshan P</h2>
+      <ul id="Roshan_P" class="event-list">
+        <li>Student Co-ordinator</li>
+        <li>99622 19859</li>
+      </ul>
+    </div>
+        <div class="track-box" onclick="toggleEvents('Roshan_P')">
+      <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='Hariharan S') }}');"></div>
+      <h2>Hariharan S</h2>
+      <ul id="Hariharan S" class="event-list">
+        <li>Student Co-ordinator</li>
+        <li>99622 19859</li>
+      </ul>
+    </div>
+        <div class="track-box" onclick="toggleEvents('E')">
+      <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='roshan_p.jpg') }}');"></div>
+      <h2>E</h2>
+      <ul id="E" class="event-list">
+        <li>Student Co-ordinator</li>
+        <li>99622 19859</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function toggleEvents(id) {
+      const list = document.getElementById(id);
+      list.style.display = list.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+
+</body>
+</html>
