@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About SCIHUM 25</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+
+    }
+
+    #background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .content {
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .about-box {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      border-radius: 20px;
+      padding: 2.5rem;
+      max-width: 1000px;
+      width: 100%;
+      color: #e5e7eb;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .about-box h1 {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      color: #00f5ff;
+      text-align: center;
+      text-shadow: 0 0 10px #00f5ff, 0 0 25px #00f5ff;
+    }
+
+    .about-box p {
+      font-size: 1.2rem;
+      line-height: 1.9;
+      margin-bottom: 1.4rem;
+      text-align: justify;
+      color: #f3f4f6;
+    }
+
+    .about-box p strong {
+      color: #ff0059;
+      text-shadow: 0 0 5px #ff0059;
+    }
+
+    @media (max-width: 768px) {
+      .about-box {
+        padding: 1.5rem;
+      }
+
+      .about-box h1 {
+        font-size: 2.2rem;
+      }
+
+      .about-box p {
+        font-size: 1.05rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <video autoplay muted loop id="background-video" playsinline>
+   <source src="{{ url_for('static', filename='background_about.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="content">
+    <div class="about-box">
+      <h1>About SCIHUM 25</h1>
+      <p>
+        Welcome to <strong>SCIHUM 25</strong>, the annual interdisciplinary symposium hosted by <strong>Sri Sairam Institute of Technology</strong>. This year’s edition brings together the brilliance of science and the beauty of the humanities under one vibrant banner. At SCIHUM 25, students from across disciplines gather to showcase innovation, creativity, and academic excellence through a series of events, challenges, and thought-provoking sessions. The theme for this year is a celebration of human intellect, imagination, and inquiry—with events designed to ignite curiosity and collaborative spirit.
+      </p>
+
+      <p>
+        Honoring our roots, the <strong>Tamil track</strong> dives into the depth and beauty of our classical language. Participants can immerse themselves in eloquent oration, poetry recitation, and literary exploration, reconnecting with cultural identity while also embracing modern perspectives. It celebrates Tamil not just as a language, but as a legacy.
+      </p>
+
+      <p>
+        In the <strong>English track</strong>, language takes center stage. Events will explore the power of spoken and written word through debates, essays, storytelling, and creative writing. This track is for those who find strength in expression and clarity in communication, pushing boundaries with words and ideas that resonate.
+      </p>
+
+      <p>
+        The symposium opens its arms to a wide range of foundational subjects. The <strong>Mathematics track</strong> is crafted for analytical thinkers and logic enthusiasts. Here, participants can engage in problem-solving battles, number theory games, and mind-bending puzzles that bring mathematical concepts to life beyond the classroom. It’s an opportunity to appreciate the elegance of math as both an art and a science.
+      </p>
+
+      <p>
+        The <strong>Physics track</strong> invites participants to unravel the mysteries of nature—from gravity to quantum phenomena. Through concept simulations, quiz-based interactions, and model experiments, this track offers a dynamic learning experience rooted in curiosity and discovery. It’s where theory meets imagination and sparks innovation.
+      </p>
+
+      <p>
+        Lastly, the <strong>Chemistry track</strong> brings molecular magic into motion. It’s a space where the periodic table becomes a playground, and chemical reactions unfold into colorful learning. Participants will get hands-on with chemical logic games, reaction mechanisms, and concept-based challenges that reveal the hidden beauty of chemistry in everyday life.
+      </p>
+
+      <p>
+        <strong>SCIHUM 25</strong> is more than just a symposium—it's a platform for students to grow, compete, collaborate, and create. Whether you’re a science enthusiast or a humanities explorer, this event promises a rich blend of knowledge, culture, and community. Come be part of something meaningful. Come be part of <strong>SCIHUM 25</strong>.
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>

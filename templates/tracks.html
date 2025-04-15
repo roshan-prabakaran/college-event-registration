@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tracks - SCIHUM-25 Symposium</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Fullscreen Background Video */
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
+      color: white;
+      text-align: center;
+    }
+
+    .track-box {
+      background: rgba(0, 0, 0, 0.5);
+      margin: 1rem auto;
+      padding: 1.8rem;
+      max-width: 600px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+
+    .track-box:hover {
+      transform: scale(1.05);
+      background: rgba(0, 0, 0, 0.7);
+    }
+    .track-box h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 0 8px rgba(255,255,255,0.8), 0 0 12px rgba(255,255,255,0.4);
+    }
+
+
+    .event-list {
+      display: none;
+      margin-top: 1rem;
+      text-align: left;
+    }
+
+    .event-list li {
+      margin: 0.5rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .track-box h2 {
+       font-size: 1.5rem; /* Adjust slightly for mobile */
+    }
+
+      .content-wrapper {
+        padding: 1rem;
+      }
+
+      .video-background {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <video class="video-background" autoplay muted loop playsinline>
+    <source src="{{ url_for('static', filename='SCI-HUM REGISTER.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="content-wrapper">
+    <div class="track-box" onclick="toggleEvents('maths')">
+      <h2>Maths</h2>
+      <ul id="maths" class="event-list">
+        <li>Paper Presentation</li>
+          <li>
+            1. Mathematics behind GPS Technology
+          </li>
+          <li>
+            2. Mathematics in Agriculture Technology
+          </li>
+          <li>
+            3. Mathematics - The Backbone of AI Poster
+          </li>
+        <li>Poster Presentation</li>
+          <li>
+            1. Mathematics in Space Exploration
+          </li>
+          <li>
+            2. Mathematics in Software Development Life cycle
+          </li>
+      </ul>
+    </div>
+
+    <div class="track-box" onclick="toggleEvents('physics')">
+      <h2>Physics</h2>
+      <ul id="physics" class="event-list">
+        <li>Project Expo</li>
+          <li>
+            Working model - Based on Physics principles
+          </li>
+        <li>Paper Presentation</li>
+          <li>
+            1 Physics of renewable energy sources
+          </li>
+          <li>
+            2.Scope &Future of EV in India
+          </li>
+          <li>
+            3.iosensors for Environmental and Food Safety Monitoring
+          </li>
+      </ul>
+    </div>
+
+    <div class="track-box" onclick="toggleEvents('english')">
+      <h2>English</h2>
+      <ul id="english" class="event-list">
+        <li>Teaser Making</li>
+          <li>
+            1. Task-Based Language Teaching: A Communicative Paradigm
+          </li>
+          <li>
+            2. The Impact of Role-Play and Simulation on ESL Learners’ Communication Skills
+          </li>
+          <li>
+            3. Storytelling as a Communicative Tool in ESL Classrooms
+          </li>
+      </ul>
+
+    </div>
+
+    <div class="track-box" onclick="toggleEvents('chemistry')">
+      <h2>Chemistry</h2>
+      <ul id="chemistry" class="event-list">
+        <li>Paper presentation</li>
+          <li>
+            1. Sustainable green  chemistry approaches
+          </li>
+          <li>
+            2. Innovation in plastic recycling
+          </li>
+        <li>Poster Presentation</li>
+          <li>
+            Smart and responsive materials
+          </li>
+      </ul>
+
+    </div>
+
+    <div class="track-box" onclick="toggleEvents('general')">
+      <h2>General Events</h2>
+      <ul id="general" class="event-list">
+        <li>
+          1.Decode the Memes
+        </li>
+        <li>
+          2.Sol-Vilayattu(Tamil)
+        </li>
+        <li>
+          3.Quest2code
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function toggleEvents(id) {
+      const list = document.getElementById(id);
+      list.style.display = list.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+
+</body>
+</html>
