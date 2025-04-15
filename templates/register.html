@@ -187,7 +187,8 @@
 
             function updateEventOptions() {
                 const department = departmentSelect.value;
-                eventSelect.innerHTML = '';
+                console.log("Department selected:", department);  // Debugging log to check department value
+                eventSelect.innerHTML = '';  // Clear existing options
 
                 const eventMap = {
                     "Mathematics": {
@@ -233,6 +234,7 @@
                 };
 
                 const options = eventMap[department];
+                console.log("Options to populate:", options);  // Debugging log to check options
 
                 if (typeof options === "object" && !Array.isArray(options)) {
                     for (let mainEvent in options) {
