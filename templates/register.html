@@ -2,136 +2,276 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SCIHUM-25 Symposium Registration</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Register - SCIHUM-25</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-color: #004e92;
+            --secondary-color: #000428;
+            --accent-color: #0078D4;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            opacity: 1;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        section {
+            padding: 1.5rem;
+            margin: 2rem auto;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        form label {
+            display: block;
+            margin-top: 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        form input, form select {
+            width: 100%;
+            padding: 0.6rem;
+            margin-top: 0.3rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #005a9e;
+        }
+
+        @media (max-width:768px) {
+            h1 {
+                font-size: 1.5rem;
+                color: white;
+            }
+
+            section {
+                padding: 1rem;
+                margin: 1rem auto;
+            }
+
+            form input, form select {
+                padding: 0.5rem;
+                font-size: 0.95rem;
+            }
+
+            button[type="submit"] {
+                padding: 0.7rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="{{ url_for('static', filename='background_registration.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <header>
+        <h1>📝 Register for SCIHUM-25</h1>
+    </header>
+
+    <section>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <p style="color: {{ 'lime' if category == 'success' else 'tomato' }}; font-weight: bold;">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form action="/register" method="post">
+            <label for="team_size">Team Size:</label>
+            <select name="team_size" id="team_size">
+                <option value="Team of 2">Team of 2</option>
+                <option value="Team of 3">Team of 3</option>
+            </select>
+
+            <label for="department">Department:</label>
+            <select name="department" id="department">
+                <option value="Mathematics">Mathematics</option>
+                <option value="Physics">Physics</option>
+                <option value="Chemistry">Chemistry</option>
+                <option value="English">English</option>
+                <option value="General Events">General Events</option>
+            </select>
+
+            <label for="event">Event:</label>
+            <select name="event" id="event"></select>
+
+            <h3 style="color:white;">Team Details</h3>
+            <label for="team_name">Team Name:</label>
+            <input type="text" name="team_name" id="team_name" required>
+
+            <label for="team_lead">Team Lead Name:</label>
+            <input type="text" name="team_lead" id="team_lead" required>
+
+            <label for="team_lead_email">Team Lead Email:</label>
+            <input type="email" name="team_lead_email" id="team_lead_email" required>
+
+            <h3 style="color:white;">Member Details</h3>
+            <label for="member1">Member 1 Name:</label>
+            <input type="text" name="member1" id="member1" required>
+
+            <label for="member1_email">Member 1 Email:</label>
+            <input type="email" name="member1_email" id="member1_email" required>
+
+            <div id="member2-section" style="display: none;">
+                <label for="member2">Member 2 Name:</label>
+                <input type="text" name="member2" id="member2">
+
+                <label for="member2_email">Member 2 Email:</label>
+                <input type="email" name="member2_email" id="member2_email">
+            </div>
+
+            <label for="phone">Contact Number:</label>
+            <input type="text" name="phone" id="phone" required>
+
+            <label for="college">College Name:</label>
+            <input type="text" name="college" id="college" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const teamSizeSelect = document.getElementById('team_size');
+            const member2Section = document.getElementById('member2-section');
             const departmentSelect = document.getElementById('department');
             const eventSelect = document.getElementById('event');
-            const teamSizeSelect = document.getElementById('team_size');
-            const member1Section = document.getElementById('member1_section');
-            const member2Section = document.getElementById('member2_section');
 
-            const eventsByDepartment = {
-                'CSE': ['AI for Sustainability', 'Natural Language Processing'],
-                'IT': ['Web3 and Blockchain', 'Open Source'],
-                'AIML': ['AI in Healthcare', 'Ethical AI'],
-                'AIDS': ['Data-Driven Economy', 'Economic Growth Predictions'],
-                'CSBS': ['AI in Management', 'Marketing and AI'],
-                'ECE': ['IoT in Smart Cities', 'Edge Computing'],
-                'EEE': ['Smart Grids', 'EV Technologies'],
-                'MECH': ['3D Printing', 'AI in Manufacturing']
-            };
+            function toggleMember2() {
+                member2Section.style.display = teamSizeSelect.value === 'Team of 3' ? 'block' : 'none';
+            }
 
             function updateEventOptions() {
                 const department = departmentSelect.value;
-                eventSelect.innerHTML = '<option value="">-- Select an Event --</option>';
-                if (eventsByDepartment[department]) {
-                    eventsByDepartment[department].forEach(event => {
+                eventSelect.innerHTML = '';
+
+                const eventMap = {
+                    "Mathematics": {
+                        "Paper Presentation": [
+                            "Mathematics behind GPS Technology",
+                            "Mathematics in Agriculture Technology",
+                            "Mathematics - The Backbone of AI"
+                        ],
+                        "Poster Presentation": [
+                            "Mathematics in Space Exploration",
+                            "Mathematics in Software Development Life cycle"
+                        ]
+                    },
+                    "Physics": {
+                        "Paper Presentation": [
+                            "Physics of Renewable Energy Sources",
+                            "Scope & Future of EV in India",
+                            "Biosensors for Environmental and Food Safety Monitoring"
+                        ],
+                        "Poster Presentation": [
+                            "Working Model - Based on Physics Principles"
+                        ]
+                    },
+                    "Chemistry": {
+                        "Paper Presentation": [
+                            "Sustainable Green Chemistry Approaches",
+                            "Innovation in Plastic Recycling"
+                        ],
+                        "Poster Presentation": ["Smart and responsive materials"]
+                    },
+                    "English": {
+                        "Teaser making": [
+                            "Task-Based Language Teaching: A Communicative Paradigm",
+                            "The Impact of Role-Play and Simulation on ESL Learners’ Communication Skills",
+                            "Storytelling as a Communicative Tool in ESL Classrooms"
+                        ]
+                    },
+                    "General Events": [
+                        "Decode the Memes",
+                        "Sol-Vilayattu(Tamil)",
+                        "quest2code"
+                    ]
+                };
+
+                const options = eventMap[department];
+
+                if (typeof options === "object" && !Array.isArray(options)) {
+                    for (let mainEvent in options) {
+                        const optGroup = document.createElement('optgroup');
+                        optGroup.label = mainEvent;
+                        options[mainEvent].forEach(subEvent => {
+                            const option = document.createElement('option');
+                            option.value = ${mainEvent} - ${subEvent};
+                            option.textContent = subEvent;
+                            optGroup.appendChild(option);
+                        });
+                        eventSelect.appendChild(optGroup);
+                    }
+                } else if (Array.isArray(options)) {
+                    options.forEach(opt => {
                         const option = document.createElement('option');
-                        option.value = event;
-                        option.textContent = event;
+                        option.value = opt;
+                        option.textContent = opt;
                         eventSelect.appendChild(option);
                     });
                 }
             }
 
-            function toggleMembers() {
-                if (teamSizeSelect.value === 'Team of 2') {
-                    member1Section.style.display = 'block';
-                    member2Section.style.display = 'none';
-                    document.getElementById('member1').required = true;
-                    document.getElementById('member1_email').required = true;
-                    document.getElementById('member2').required = false;
-                    document.getElementById('member2_email').required = false;
-                } else if (teamSizeSelect.value === 'Team of 3') {
-                    member1Section.style.display = 'block';
-                    member2Section.style.display = 'block';
-                    document.getElementById('member1').required = true;
-                    document.getElementById('member1_email').required = true;
-                    document.getElementById('member2').required = true;
-                    document.getElementById('member2_email').required = true;
-                } else {
-                    member1Section.style.display = 'none';
-                    member2Section.style.display = 'none';
-                    document.getElementById('member1').required = false;
-                    document.getElementById('member1_email').required = false;
-                    document.getElementById('member2').required = false;
-                    document.getElementById('member2_email').required = false;
-                }
-            }
-
+            teamSizeSelect.addEventListener('change', toggleMember2);
             departmentSelect.addEventListener('change', updateEventOptions);
-            teamSizeSelect.addEventListener('change', toggleMembers);
 
+            toggleMember2();
             updateEventOptions();
-            toggleMembers();
         });
     </script>
-</head>
-<body>
-    <h1>SCIHUM-25 Symposium Registration</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <ul>
-          {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
 
-    <form action="{{ url_for('submit') }}" method="POST">
-        <label for="name">Name:</label>
-        <input type="text" name="name" required><br>
-
-        <label for="email">Email:</label>
-        <input type="email" name="email" required><br>
-
-        <label for="phone">Phone Number:</label>
-        <input type="text" name="phone" required><br>
-
-        <label for="department">Department:</label>
-        <select name="department" id="department" required>
-            <option value="">-- Select Department --</option>
-            <option value="CSE">CSE</option>
-            <option value="IT">IT</option>
-            <option value="AIML">AIML</option>
-            <option value="AIDS">AIDS</option>
-            <option value="CSBS">CSBS</option>
-            <option value="ECE">ECE</option>
-            <option value="EEE">EEE</option>
-            <option value="MECH">MECH</option>
-        </select><br>
-
-        <label for="team_size">Team Size:</label>
-        <select name="team_size" id="team_size" required>
-            <option value="">-- Select Team Size --</option>
-            <option value="Individual">Individual</option>
-            <option value="Team of 2">Team of 2</option>
-            <option value="Team of 3">Team of 3</option>
-        </select><br>
-
-        <label for="event">Event:</label>
-        <select name="event" id="event" required></select><br>
-
-        <div id="member1_section">
-            <label for="member1">Member 1 Name:</label>
-            <input type="text" name="member1" id="member1"><br>
-
-            <label for="member1_email">Member 1 Email:</label>
-            <input type="email" name="member1_email" id="member1_email"><br>
-        </div>
-
-        <div id="member2_section">
-            <label for="member2">Member 2 Name:</label>
-            <input type="text" name="member2" id="member2"><br>
-
-            <label for="member2_email">Member 2 Email:</label>
-            <input type="email" name="member2_email" id="member2_email"><br>
-        </div>
-
-        <input type="submit" value="Register">
-    </form>
 </body>
 </html>
