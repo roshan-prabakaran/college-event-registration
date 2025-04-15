@@ -182,7 +182,12 @@
             const eventSelect = document.getElementById('event');
 
             function toggleMember2() {
-                member2Section.style.display = teamSizeSelect.value === 'Team of 3' ? 'block' : 'none';
+                // This function now hides or shows Member 2 section based on Team Size.
+                if (teamSizeSelect.value === 'Team of 3') {
+                    member2Section.style.display = 'block';
+                } else {
+                    member2Section.style.display = 'none';
+                }
             }
 
             function updateEventOptions() {
