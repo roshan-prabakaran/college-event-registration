@@ -77,8 +77,7 @@ def register():
         }
 
         # Required field validation
-        required_fields = ['Team Name', 'Team Lead', 'Team Lead Email', 'Contact Number', 'College', 'Department',
-                           'Event']
+        required_fields = ['Team Name', 'Team Lead', 'Team Lead Email', 'Contact Number', 'College', 'Department', 'Event']
         if team_size == '2':
             required_fields += ['Member 1', 'Member 1 Email']
         elif team_size == '3':
