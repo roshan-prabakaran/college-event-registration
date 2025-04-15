@@ -1,29 +1,18 @@
 from flask import Flask, render_template, request, redirect, flash
 import os
 import gspread
-import json
-from google.oauth2 import service_account
+from oauth2client.service_account import ServiceAccountCredentials
+import re
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your_default_secret_key')
+app.secret_key = 'your_secret_key_here'  # Replace with a secure secret key
 
 # Google Sheets Setup
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+client = gspread.authorize(creds)
 
-# Retrieve credentials JSON string from environment variable
-credentials_json = os.getenv('GOOGLE_CREDENTIALS_JSON')
-
-if credentials_json is None:
-    raise ValueError("Google credentials not found in environment variables.")
-
-# Parse the JSON string
-creds_info = json.loads(credentials_json)
-
-# Use the credentials for gspread authorization
-credentials = service_account.Credentials.from_service_account_info(creds_info, scopes=scope)
-client = gspread.authorize(credentials)
-
-# Map department to sheet name (Google Sheet IDs)
+# Map department to sheet ID
 department_sheet_map = {
     'Mathematics': '1H1_gPKbUNYJKMiOPlrA39ul5oSGaqrq7_4ZseyhVdeQ',
     'Physics': '1-qR-7UFjrfl2XIYE_5795iABn9j28zfqY09Z_gR47bw',
@@ -32,6 +21,11 @@ department_sheet_map = {
     'General Events': '1qkMNeZuKymjqb9YKca0IQMfmbKNFMKjW9GSrLF75Ezs'
 }
 
+# Phone number validation (10 digits)
+def validate_phone(phone):
+    return bool(re.match(r'^\d{10}$', phone))
+
+# Routes
 @app.route('/')
 def home():
     return render_template("index.html")
@@ -59,63 +53,56 @@ def prizes():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        team_size = request.form.get('team_size', '')
-
+        # Collect form data
         data = {
-            'Team Size': team_size,
-            'Team Name': request.form.get('team_name', ''),
-            'Team Lead': request.form.get('team_lead', ''),
-            'Team Lead Email': request.form.get('team_lead_email', ''),
-            'Member 1': request.form.get('member1', ''),
-            'Member 1 Email': request.form.get('member1_email', ''),
-            'Member 2': request.form.get('member2', ''),
-            'Member 2 Email': request.form.get('member2_email', ''),
-            'Contact Number': request.form.get('phone', ''),
-            'College': request.form.get('college', ''),
-            'Department': request.form.get('department', ''),
-            'Event': request.form.get('event', '')
+            'Team Name': request.form.get('team_name', '').strip(),
+            'Team Lead': request.form.get('team_lead', '').strip(),
+            'Team Lead Email': request.form.get('team_lead_email', '').strip(),
+            'Team Lead Phone': request.form.get('team_lead_phone', '').strip(),
+            'Member 1': request.form.get('member1', '').strip(),
+            'Member 1 Phone': request.form.get('member1_phone', '').strip(),
+            'College': request.form.get('college', '').strip(),
+            'Department': request.form.get('department', '').strip(),
+            'Event': request.form.get('event', '').strip()
         }
 
-        # Required field validation
-        required_fields = ['Team Name', 'Team Lead', 'Team Lead Email', 'Contact Number', 'College', 'Department', 'Event']
-        if team_size == '2':
-            required_fields += ['Member 1', 'Member 1 Email']
-        elif team_size == '3':
-            required_fields += ['Member 1', 'Member 1 Email', 'Member 2', 'Member 2 Email']
-
+        # Validate required fields
+        required_fields = list(data.keys())
         missing = [field for field in required_fields if not data[field]]
         if missing:
             flash(f"Missing fields: {', '.join(missing)}", 'error')
-            return render_template("register.html")
+            return render_template("register.html", form=data)
+
+        # Validate phone numbers
+        if not validate_phone(data['Team Lead Phone']):
+            flash("Invalid phone number format for Team Lead.", 'error')
+            return render_template("register.html", form=data)
+
+        if not validate_phone(data['Member 1 Phone']):
+            flash("Invalid phone number format for Member 1.", 'error')
+            return render_template("register.html", form=data)
 
         # Get correct Google Sheet
         sheet_id = department_sheet_map.get(data['Department'])
         if not sheet_id:
             flash("Invalid department selected.", 'error')
-            return render_template("register.html")
+            return render_template("register.html", form=data)
 
+        # Try saving to Google Sheet
         try:
-            # Debug: Log the data being sent
-            print("Data being saved to Google Sheets:", data)
-
-            # Open the correct Google Sheet based on the department
+            print("Saving to Google Sheet:", data)
             sheet = client.open_by_key(sheet_id).sheet1
-
-            # Append the registration data to the sheet
             sheet.append_row(list(data.values()))
-            # Flash the success message after registration
-            flash("Registration successful!", 'success')
+            flash("✅ Registration successful!", 'success')
             return redirect('/')
-
         except gspread.exceptions.APIError as e:
-            # Detailed error logging
             print(f"Google Sheets API error: {e}")
-            flash(f"Error saving to Google Sheets: {e}", 'error')
-            return render_template("register.html")
+            flash("⚠️ Error saving to Google Sheets. Please try again.", 'error')
+            return render_template("register.html", form=data)
         except Exception as e:
             print(f"Unexpected error: {e}")
-            flash(f"Unexpected error: {e}", 'error')
-            return render_template("register.html")
+            flash("⚠️ An unexpected error occurred. Please contact support.", 'error')
+            return render_template("register.html", form=data)
 
     return render_template("register.html")
 
