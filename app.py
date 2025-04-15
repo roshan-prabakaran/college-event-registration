@@ -9,21 +9,16 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your_default_secret_key')
 
 # Google Sheets Setup
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-
-# Retrieve credentials JSON string from environment variable
 credentials_json = os.getenv('GOOGLE_CREDENTIALS_JSON')
 
-if credentials_json is None:
+if not credentials_json:
     raise ValueError("Google credentials not found in environment variables.")
 
-# Parse the JSON string
 creds_info = json.loads(credentials_json)
-
-# Use the credentials for gspread authorization
 credentials = service_account.Credentials.from_service_account_info(creds_info, scopes=scope)
 client = gspread.authorize(credentials)
 
-# Map department to sheet name (Google Sheet IDs)
+# Department to Google Sheet ID mapping
 department_sheet_map = {
     'Mathematics': '1H1_gPKbUNYJKMiOPlrA39ul5oSGaqrq7_4ZseyhVdeQ',
     'Physics': '1-qR-7UFjrfl2XIYE_5795iABn9j28zfqY09Z_gR47bw',
@@ -60,66 +55,51 @@ def prizes():
 def register():
     if request.method == 'POST':
         team_size = request.form.get('team_size', '')
-
         data = {
             'Team Size': team_size,
-            'Team Name': request.form.get('team_name', ''),
-            'Team Lead': request.form.get('team_lead', ''),
-            'Team Lead Email': request.form.get('team_lead_email', ''),
-            'Member 1': request.form.get('member1', ''),
-            'Member 1 Email': request.form.get('member1_email', ''),
-            'Member 2': request.form.get('member2', ''),
-            'Member 2 Email': request.form.get('member2_email', ''),
-            'Contact Number': request.form.get('phone', ''),
-            'College': request.form.get('college', ''),
-            'Department': request.form.get('department', ''),
-            'Event': request.form.get('event', '')
+            'Team Name': request.form.get('team_name', '').strip(),
+            'Team Lead': request.form.get('team_lead', '').strip(),
+            'Team Lead Email': request.form.get('team_lead_email', '').strip(),
+            'Member 1': request.form.get('member1', '').strip(),
+            'Member 1 Email': request.form.get('member1_email', '').strip(),
+            'Member 2': request.form.get('member2', '').strip(),
+            'Member 2 Email': request.form.get('member2_email', '').strip(),
+            'Contact Number': request.form.get('phone', '').strip(),
+            'College': request.form.get('college', '').strip(),
+            'Department': request.form.get('department', '').strip(),
+            'Event': request.form.get('event', '').strip()
         }
 
-        # Required field validation
-        required_fields = ['Team Name', 'Team Lead', 'Team Lead Email', 'Contact Number', 'College', 'Department',
-                           'Event']
+        required_fields = ['Team Name', 'Team Lead', 'Team Lead Email', 'Contact Number', 'College', 'Department', 'Event']
         if team_size == '2':
             required_fields += ['Member 1', 'Member 1 Email']
         elif team_size == '3':
             required_fields += ['Member 1', 'Member 1 Email', 'Member 2', 'Member 2 Email']
 
-        missing = [field for field in required_fields if not data[field]]
+        missing = [field for field in required_fields if not data.get(field)]
         if missing:
             flash(f"Missing fields: {', '.join(missing)}", 'error')
-            return render_template("register.html")
+            return render_template("register.html", data=data)
 
-        # Get correct Google Sheet
         sheet_id = department_sheet_map.get(data['Department'])
         if not sheet_id:
             flash("Invalid department selected.", 'error')
-            return render_template("register.html")
+            return render_template("register.html", data=data)
 
         try:
-            # Debug: Log the data being sent
-            print("Data being saved to Google Sheets:", data)
-
-            # Open the correct Google Sheet based on the department
             sheet = client.open_by_key(sheet_id).sheet1
-
-            # Append the registration data to the sheet
             sheet.append_row(list(data.values()))
-            # Flash the success message after registration
-            flash("Registration successful!", 'success')
+            flash("✅ Registration successful!", 'success')
             return redirect('/')
-
         except gspread.exceptions.APIError as e:
-            # Detailed error logging
-            print(f"Google Sheets API error: {e}")
-            flash(f"Error saving to Google Sheets: {e}", 'error')
-            return render_template("register.html")
+            flash(f"⚠️ Google Sheets API error: {str(e)}", 'error')
         except Exception as e:
-            print(f"Unexpected error: {e}")
-            flash(f"Unexpected error: {e}", 'error')
-            return render_template("register.html")
+            flash(f"⚠️ Unexpected error occurred: {str(e)}", 'error')
+
+        return render_template("register.html", data=data)
 
     return render_template("register.html")
-
+    
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
