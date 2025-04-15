@@ -249,7 +249,7 @@
                         optGroup.label = mainEvent;
                         options[mainEvent].forEach(subEvent => {
                             const option = document.createElement('option');
-                            option.value = ${mainEvent} - ${subEvent};
+                            option.value = `${mainEvent} - ${subEvent}`;
                             option.textContent = subEvent;
                             optGroup.appendChild(option);
                         });
