@@ -64,6 +64,10 @@ def coordinators():
 # def prizes():
 #     return render_template("prizes.html")
 
+@app.route('/regulations')
+def regulations():
+    return render_template("regulations.html")
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
