@@ -107,8 +107,13 @@ def register():
 
             # Append data
             sheet.append_row(list(data.values()))
-            flash("✅ Registration successful!", 'success')
+
+            # WhatsApp community link
+            whatsapp_link = "https://chat.whatsapp.com/L9Va0pKN2oWCqJ7zvKbcnV"  # Replace with your actual link
+
+            flash(f"✅ Registration successful! Join our WhatsApp community: {whatsapp_link}", 'success')
             return redirect('/')
+
         except gspread.exceptions.APIError as e:
             print(f"Google Sheets API error: {e}")
             flash("⚠️ Google Sheets error. Please try again later.", 'error')
