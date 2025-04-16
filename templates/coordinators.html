@@ -12,7 +12,6 @@
       overflow-x: hidden;
     }
 
-    /* Fullscreen Background Video */
     .video-background {
       position: fixed;
       top: 0;
@@ -48,7 +47,6 @@
       background: rgba(0, 0, 0, 0.7);
     }
 
-    /* Profile image inside box */
     .profile-pic {
       width: 100px;
       height: 100px;
@@ -107,10 +105,10 @@
   </video>
 
   <div class="content-wrapper">
-    <div class="track-box" onclick="toggleEvents('Aishwarya N')">
+    <div class="track-box" onclick="toggleEvents('Aishwarya_N')">
       <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='aishwarya.jpg') }}');"></div>
       <h2>Aishwarya N</h2>
-      <ul id="Aishwarya N" class="event-list">
+      <ul id="Aishwarya_N" class="event-list">
         <li>Staff Co-ordinator</li>
         <li>9566987456</li>
       </ul>
@@ -125,7 +123,7 @@
       </ul>
     </div>
 
-    <div class="track-box" onclick="toggleEvents('Balaji P')">
+    <div class="track-box" onclick="toggleEvents('Balaji_P')">
       <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='balaji_p.jpg') }}');"></div>
       <h2>Balaji P</h2>
       <ul id="Balaji_P" class="event-list">
@@ -134,16 +132,16 @@
       </ul>
     </div>
 
-    <div class="track-box" onclick="toggleEvents('Sriram R')">
+    <div class="track-box" onclick="toggleEvents('Sriram_R')">
       <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='sriram_r.jpg') }}');"></div>
       <h2>Sriram R</h2>
-      <ul id="Sriram R" class="event-list">
+      <ul id="Sriram_R" class="event-list">
         <li>Student Co-ordinator</li>
         <li>6379390238</li>
       </ul>
     </div>
 
-    <div class="track-box" onclick="toggleEvents('Roshan P')">
+    <div class="track-box" onclick="toggleEvents('Roshan_P')">
       <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='roshan_p.jpg') }}');"></div>
       <h2>Roshan P</h2>
       <ul id="Roshan_P" class="event-list">
@@ -151,12 +149,13 @@
         <li>9962219859</li>
       </ul>
     </div>
-        <div class="track-box" onclick="toggleEvents('Hariharan S')">
-      <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='Hariharan S') }}');"></div>
+
+    <div class="track-box" onclick="toggleEvents('Hariharan_S')">
+      <div class="profile-pic" style="background-image: url('{{ url_for('static', filename='hariharan_s.jpg') }}');"></div>
       <h2>Hariharan S</h2>
-      <ul id="Hariharan S" class="event-list">
+      <ul id="Hariharan_S" class="event-list">
         <li>Student Co-ordinator</li>
-        <li>+6385712937</li>
+        <li>6385712937</li>
       </ul>
     </div>
   </div>
@@ -164,7 +163,9 @@
   <script>
     function toggleEvents(id) {
       const list = document.getElementById(id);
-      list.style.display = list.style.display === 'block' ? 'none' : 'block';
+      if (list) {
+        list.style.display = list.style.display === 'block' ? 'none' : 'block';
+      }
     }
   </script>
 
