@@ -29,11 +29,13 @@ department_sheet_map = {
     'General Events': '1qkMNeZuKymjqb9YKca0IQMfmbKNFMKjW9GSrLF75Ezs'
 }
 
+# WhatsApp community link
+WHATSAPP_COMMUNITY_LINK = "https://chat.whatsapp.com/your_community_link_here"
+
 def validate_phone(phone):
     return bool(re.match(r'^\d{10}$', phone))
 
 def ensure_headers(sheet, headers):
-    """Write headers if the sheet is empty"""
     existing_data = sheet.get_all_values()
     if not existing_data:
         sheet.insert_row(headers, index=1)
@@ -64,14 +66,16 @@ def prizes():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    show_whatsapp_link = False
+
     if request.method == 'POST':
         data = {
             'Team Name': request.form.get('team_name', '').strip(),
             'Team Lead': request.form.get('team_lead', '').strip(),
             'Team Lead Email': request.form.get('team_lead_email', '').strip(),
-            'Team Lead Phone': request.form.get('team_lead_phone', '').strip(),  # Corrected
+            'Team Lead Phone': request.form.get('team_lead_phone', '').strip(),
             'Member 1': request.form.get('member1', '').strip(),
-            'Member 1 Phone': request.form.get('member1_phone', '').strip(),  # Corrected
+            'Member 1 Phone': request.form.get('member1_phone', '').strip(),
             'College': request.form.get('college', '').strip(),
             'College Address': request.form.get('college_address', '').strip(),
             'Department': request.form.get('department', '').strip(),
@@ -100,20 +104,14 @@ def register():
 
         try:
             sheet = client.open_by_key(sheet_id).sheet1
-
-            # Ensure headers exist
             headers = list(data.keys())
             ensure_headers(sheet, headers)
 
-            # Append data
             sheet.append_row(list(data.values()))
+            flash("✅ Registration successful!", 'success')
+            show_whatsapp_link = True
 
-            # WhatsApp community link
-            whatsapp_link = "https://chat.whatsapp.com/L9Va0pKN2oWCqJ7zvKbcnV"  # Replace with your actual link
-
-            flash(f"✅ Registration successful! Join our WhatsApp community: {whatsapp_link}", 'success')
-            return redirect('/')
-
+            return render_template("register.html", form={}, success=True, whatsapp_link=WHATSAPP_COMMUNITY_LINK)
         except gspread.exceptions.APIError as e:
             print(f"Google Sheets API error: {e}")
             flash("⚠️ Google Sheets error. Please try again later.", 'error')
