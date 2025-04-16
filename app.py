@@ -69,9 +69,9 @@ def register():
             'Team Name': request.form.get('team_name', '').strip(),
             'Team Lead': request.form.get('team_lead', '').strip(),
             'Team Lead Email': request.form.get('team_lead_email', '').strip(),
-            'Team Lead Phone': request.form.get('team_lead_number', '').strip(),
+            'Team Lead Phone': request.form.get('team_lead_phone', '').strip(),  # Corrected
             'Member 1': request.form.get('member1', '').strip(),
-            'Member 1 Phone': request.form.get('member1_number', '').strip(),
+            'Member 1 Phone': request.form.get('member1_phone', '').strip(),  # Corrected
             'College': request.form.get('college', '').strip(),
             'College Address': request.form.get('college_address', '').strip(),
             'Department': request.form.get('department', '').strip(),
