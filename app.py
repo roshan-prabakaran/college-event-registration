@@ -60,9 +60,9 @@ def timeline():
 def coordinators():
     return render_template("coordinators.html")
 
-@app.route('/prizes')
-def prizes():
-    return render_template("prizes.html")
+# @app.route('/prizes')
+# def prizes():
+#     return render_template("prizes.html")
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
