@@ -66,8 +66,6 @@ def prizes():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    show_whatsapp_link = False
-
     if request.method == 'POST':
         data = {
             'Team Name': request.form.get('team_name', '').strip(),
@@ -108,10 +106,8 @@ def register():
             ensure_headers(sheet, headers)
 
             sheet.append_row(list(data.values()))
-            flash("✅ Registration successful!", 'success')
-            show_whatsapp_link = True
+            return redirect(WHATSAPP_COMMUNITY_LINK)
 
-            return render_template("register.html", form={}, success=True, whatsapp_link=WHATSAPP_COMMUNITY_LINK)
         except gspread.exceptions.APIError as e:
             print(f"Google Sheets API error: {e}")
             flash("⚠️ Google Sheets error. Please try again later.", 'error')
