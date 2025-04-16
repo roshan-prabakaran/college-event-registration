@@ -61,13 +61,18 @@
     }
 
     form input,
-    form select {
+    form select,
+    form textarea {
       width: 100%;
       padding: 0.6rem;
       margin-top: 0.3rem;
       font-size: 1rem;
       border-radius: 5px;
       border: none;
+    }
+
+    form textarea {
+      resize: vertical;
     }
 
     button[type="submit"] {
@@ -99,7 +104,8 @@
       }
 
       form input,
-      form select {
+      form select,
+      form textarea {
         padding: 0.5rem;
         font-size: 0.95rem;
       }
@@ -166,6 +172,9 @@
       <label for="college">College Name:</label>
       <input type="text" name="college" id="college" required />
 
+      <label for="college_address">College Address:</label>
+      <textarea name="college_address" id="college_address" rows="4" required placeholder="Street, City, District, State, Pincode"></textarea>
+
       <button type="submit">Submit</button>
     </form>
   </section>
@@ -216,6 +225,7 @@
           "General Events": [
             "Decode the Memes",
             "Sol-Vilayattu(Tamil)"
+            "Code Flash"
           ],
         };
 
