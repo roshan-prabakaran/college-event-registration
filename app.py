@@ -32,7 +32,12 @@ department_sheet_map = {
 def validate_phone(phone):
     return bool(re.match(r'^\d{10}$', phone))
 
-# Routes
+def ensure_headers(sheet, headers):
+    """Write headers if the sheet is empty"""
+    existing_data = sheet.get_all_values()
+    if not existing_data:
+        sheet.insert_row(headers, index=1)
+
 @app.route('/')
 def home():
     return render_template("index.html")
@@ -64,10 +69,11 @@ def register():
             'Team Name': request.form.get('team_name', '').strip(),
             'Team Lead': request.form.get('team_lead', '').strip(),
             'Team Lead Email': request.form.get('team_lead_email', '').strip(),
-            'Team Lead Phone': request.form.get('team_lead_phone', '').strip(),
+            'Team Lead Phone': request.form.get('team_lead_number', '').strip(),
             'Member 1': request.form.get('member1', '').strip(),
-            'Member 1 Phone': request.form.get('member1_phone', '').strip(),
+            'Member 1 Phone': request.form.get('member1_number', '').strip(),
             'College': request.form.get('college', '').strip(),
+            'College Address': request.form.get('college_address', '').strip(),
             'Department': request.form.get('department', '').strip(),
             'Event': request.form.get('event', '').strip(),
             'Timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -94,6 +100,12 @@ def register():
 
         try:
             sheet = client.open_by_key(sheet_id).sheet1
+
+            # Ensure headers exist
+            headers = list(data.keys())
+            ensure_headers(sheet, headers)
+
+            # Append data
             sheet.append_row(list(data.values()))
             flash("✅ Registration successful!", 'success')
             return redirect('/')
