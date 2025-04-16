@@ -30,7 +30,7 @@ department_sheet_map = {
 }
 
 # WhatsApp community link
-WHATSAPP_COMMUNITY_LINK = "https://chat.whatsapp.com/your_community_link_here"
+WHATSAPP_COMMUNITY_LINK = "https://chat.whatsapp.com/L9Va0pKN2oWCqJ7zvKbcnV"
 
 def validate_phone(phone):
     return bool(re.match(r'^\d{10}$', phone))
