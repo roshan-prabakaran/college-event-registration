@@ -1,18 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Regulations - SCIHUM-25</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8">
+  <title>SCIHUM 25 - Regulations</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+    }
+
+    #background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .content {
+      min-height: 100vh;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .regulations-box {
+      background: rgba(30, 30, 60, 0.7);
+      backdrop-filter: blur(5px);
+      border-radius: 20px;
+      padding: 2.5rem;
+      max-width: 800px;
+      width: 100%;
+      color: #fef9c3;
+      box-shadow: 0 0 30px rgba(167, 139, 250, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .regulations-box h1 {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      color: #a78bfa;
+      text-align: center;
+      text-shadow: 0 0 10px #a78bfa, 0 0 25px #a78bfa;
+    }
+
+    .regulations-box ul {
+      font-size: 1.2rem;
+      line-height: 2;
+      padding-left: 1.2rem;
+      color: #fef9c3;
+    }
+
+    .regulations-box ul li::marker {
+      color: #f97316;
+    }
+
+    .regulations-box ul li strong {
+      color: #facc15;
+    }
+
+    @media (max-width: 768px) {
+      .regulations-box {
+        padding: 1.5rem;
+      }
+
+      .regulations-box h1 {
+        font-size: 2.2rem;
+      }
+
+      .regulations-box ul {
+        font-size: 1.05rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header><h1>Regulations</h1></header>
-    <section>
-        <ul>
-            <li>Two members per team</li>
-            <li>1 Technical & 1 Non-Technical event per team</li>
-            <li>No two events in same category</li>
-        </ul>
-    </section>
+
+  <video autoplay muted loop id="background-video" playsinline>
+    <source src="{{ url_for('static', filename='background_about.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="content">
+    <div class="regulations-box">
+      <h1>General Guidelines</h1>
+      <ul>
+        <li>Students are kindly requested to maintain the <strong>formal dress code</strong>.</li>
+        <li>Only <strong>I-Year B.E/B.Tech</strong> students are eligible to participate.</li>
+        <li>For online registration, use the link provided in the registration section.</li>
+        <li>The link is applicable only for <strong>Decode the Memes</strong>, <strong>Solvilaiyattu</strong>, and <strong>Code Clash</strong>.</li>
+        <li>For all other events, <strong>communication will be through email only</strong>.</li>
+        <li>The registration link will be disabled on <strong>26.04.2025</strong>.</li>
+      </ul>
+    </div>
+  </div>
+
 </body>
 </html>
